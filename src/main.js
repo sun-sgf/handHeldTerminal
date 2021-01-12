@@ -5,7 +5,7 @@ import store from './store'
 import 'lib-flexible'
 import  'amfe-flexible'
 import "./assets/reset.css"
-import { getToken, removeToken } from "@/utils/auth"
+import { getToken } from "@/utils/auth"
 Vue.config.productionTip = false
 import Mui from 'vue-awesome-mui';
 Vue.use(Mui);
@@ -24,8 +24,7 @@ router.beforeEach((to, from, next) => {
     if(getToken()){
       console.log("有token");
       if(to.name == 'login'){
-        removeToken();
-        next();
+        next("/");
       } else {
         next();
       }
@@ -33,15 +32,6 @@ router.beforeEach((to, from, next) => {
       console.log("没有token");
       next('/login');
     }
-  // if(to.meta.requireAuth){
-  //   if(getToken()){
-  //     next()
-  //   }else{
-  //     next({path:'/login'})
-  //   }
-  // }else{
-  //   next()
-  // }
 })
 let vueThis = new Vue({
   router,

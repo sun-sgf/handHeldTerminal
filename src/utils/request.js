@@ -1,7 +1,7 @@
 import Vue from '@/main'
 
 import axios from 'axios'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
@@ -37,6 +37,7 @@ service.interceptors.response.use(res => {
         message: '登录状态已过期，请重新登录',
       }).then(() => {
           // on confirm
+          removeToken();
           Vue.$router.push("/login");
         })
         .catch(() => {

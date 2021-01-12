@@ -85,13 +85,12 @@
             label="终端编号"
             :disabled="true"
           />
-          <div style="margin: 26px;">
-            <Button round block type="info" @click="onSubmit">确认</Button>
-          </div>
-          <div style="margin: 16px;">
-            <Button round block type="info"  @click="tab(1)">重新扫描</Button>
-          </div>
+          
         </Form>
+        <div class="bottomButton">
+          <Button block plain type="info" @click="onSubmit">确认</Button>
+          <Button block type="info" @click="tab(1)">重新扫描</Button>
+        </div>
       </div>
     </div>
   </div>
@@ -431,11 +430,24 @@ export default {
     }
     // 窗口
     .boxContent{
+      width: 100%;
       height: calc(100% - 60px);
-      // background: yellow;
       position: relative;
       .box2{
+        height: calc(100% - 60px);
         padding-top: 60px;
+        position: relative;
+        .bottomButton{
+          position: absolute;
+          width: 100%;
+          left: 0;
+          bottom: 20px;
+          /deep/.van-button{
+            // width: 90%;
+            // margin: 0 auto 20px;
+            margin-bottom: 20px;
+          }
+        }
       }
       #bcid {
         width: 100%;
@@ -447,6 +459,7 @@ export default {
     }
 
   }
+
   .zIndex{
     z-index: 99999 !important;
   }

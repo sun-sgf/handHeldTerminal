@@ -49,6 +49,10 @@ export default {
     
   },
   mounted() {
+    if(localStorage.getItem('userName')){
+      this.form.username = localStorage.getItem('userName')
+      this.form.password = localStorage.getItem('password')
+    }
   },
   methods: {
     onSubmit(){
@@ -58,6 +62,9 @@ export default {
         console.log("res", res);
         if(res.code == 200){
           setToken(res.token);
+          // 记录用户信息
+          localStorage.setItem('userName', this.form.username);
+          localStorage.setItem('password', this.form.password);
           this.$router.push("/");
         }
       })

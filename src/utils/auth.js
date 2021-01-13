@@ -17,3 +17,5 @@ export function removeToken() {
   return localStorage.removeItem(TokenKey);
   // return Cookies.remove(TokenKey)
 }
+
+export let plus;

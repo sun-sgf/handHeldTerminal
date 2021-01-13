@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="boxContent">
-      <div class="box1 box" id="bcid" v-if="boxShow == 1">
+      <div class="box1 box" id="bcid" v-show="boxShow == 1">
         <!-- 二维码扫描窗口 -->
       </div>
       <div class="box2 box" v-if="boxShow == 2">
@@ -38,7 +38,6 @@
             name="省"
             label="省"
             readonly
-            placeholder="请填写省"
             @click="goArea(1)"
             :rules="[{ required: true, message: '请填写省' }]"
           />
@@ -47,7 +46,6 @@
             name="市"
             label="市"
             readonly
-            placeholder="请填写市"
             @click="goArea(2)"
             :rules="[{ required: true, message: '请填写市' }]"
           />
@@ -56,7 +54,6 @@
             name="监狱名称"
             label="监狱名称"
             readonly
-            placeholder="请填写监狱名称"
             @click="goArea(3)"
             :rules="[{ required: true, message: '请填写监狱名称' }]"
           />
@@ -85,11 +82,11 @@
             label="终端编号"
             :disabled="true"
           />
+          <Button round type="info" style="margin-top: 40px" @click="onSubmit">确认</Button>
           
         </Form>
         <div class="bottomButton">
-          <Button block plain type="info" @click="onSubmit">确认</Button>
-          <Button block type="info" @click="tab(1)">重新扫描</Button>
+          <Button round type="info" @click="tab(1)">重新扫描</Button>
         </div>
       </div>
     </div>
@@ -98,6 +95,7 @@
 
 <script>
 let scan = null
+// import {plus} from "@/utils/auth"
 import { provinceApi, cityApi, prisonApi, insertEquipmentApi } from "@/Api/home.js"
 import { Button, Icon, Form, Field, Popup, Picker   } from "vant"
 export default {
@@ -132,7 +130,6 @@ export default {
       prisonData: [],
       showPicker: false,
       codeUrl: '',
-      
     }
   },
   created(){
@@ -279,9 +276,9 @@ export default {
               this.starting();
             } else {
               this.startScan();
+              this.boxShow = val;
             }
           }
-          this.boxShow = val;
         } else {
           this.$notify({
             message: "请选择您要录入信息的监狱！！",
@@ -335,17 +332,21 @@ export default {
       if (!window.plus) return
       // scan = new plus.barcode.create('bcid');
       scan = plus.barcode.create('bcid', [plus.barcode.QR], {
-        top:'60px',
+        top:'59px',
         left:'0px',
         width: '100%',
         height: '100%',
-        position: 'static'
+        position: 'static',
+        frameColor: "#409EFF",  
+        scanbarColor: "#409EFF",  
+        background: "rgba(255,255,255,-20)"
       });
       plus.webview.currentWebview().append(scan);
       console.log("scan、、、、、、、、、、、、、、、、、、、、、、、、", scan);
       // 开始扫描
       console.log("开始扫描");
       that.startScan();
+      this.boxShow = 1; // 跳转页面
       scan.onmarked = onmarked
       function onmarked (type, result, file) {
         switch (type) {
@@ -363,27 +364,11 @@ export default {
             break
         }
         console.log("扫描数据",type, result, file);
-        // new
-        // that.$dialog.confirm({
-        //   title: '扫描结果',
-        //   className: "zIndex",
-        //   message: result.replace(/\n/g, ''),
-        // }).then(() => {
-        //     // 确定
-        //     that.form.terminalCode = result;
-        //     that.closeScan();
-        //     that.boxShow = 3
-        //   })
-        //   .catch(() => {
-        //     // on cancel
-        //     console.log("取消");
-        //   });
-        // old
         result = result.replace(/\n/g, '')
         that.form.terminalCode = result;
-        alert(result)
-        that.boxShow = 3
+        // alert(result)
         that.closeScan()
+        that.boxShow = 3
       }
     },
     // 开始扫描
@@ -442,12 +427,12 @@ export default {
           width: 100%;
           left: 0;
           bottom: 20px;
-          /deep/.van-button{
-            // width: 90%;
-            // margin: 0 auto 20px;
-            margin-bottom: 20px;
-          }
+          
         }
+      }
+      /deep/.van-button{
+        width: 80%;
+        margin: 0 auto 20px;
       }
       #bcid {
         width: 100%;
